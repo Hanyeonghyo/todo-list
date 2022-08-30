@@ -21,10 +21,17 @@ const TodoItemInputField = (props) => {
     <Button variant="outlined" onClick={onSubmit}>Submit</Button>
   </div>);
 };
+
+const TodoItemList = (props) => {
+  return (<div>
+  </div>);
+};
+
 function App() {
   return (
     <div className="App">
       <TodoItemInputField onSubmit={() => {}} />
+      <TodoItemList />
     </div>
   );
 }
