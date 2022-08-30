@@ -3,7 +3,31 @@ import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-let todoItemId = 0;
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+ 
+ // Your web app's Firebase configuration
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ const firebaseConfig = {
+  apiKey: "AIzaSyAPjYrRKj11e85Yx1ZaqFiZ6STbH-ciUT8",
+  authDomain: "todo-list-app-98806.firebaseapp.com",
+  projectId: "todo-list-app-98806",
+  storageBucket: "todo-list-app-98806.appspot.com",
+  messagingSenderId: "886143434487",
+  appId: "1:886143434487:web:b5227108bd4261291f9df2",
+  measurementId: "G-NGJKZTHLQN"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+const db = getFirestore(app);
 
 const TodoItemInputField = (props) => {
   const [input, setInput] = useState("");
@@ -50,9 +74,14 @@ const TodoItemList = (props) => {
 function App() {
   const [todoItemList, setTodoItemList] = useState([]);
 
-  const onSubmit = (newTodoItem) => {
+  const onSubmit = async (newTodoItem) => {
+    const docRef = await addDoc(collection(db, "todoItem"), {
+      todoItemContent: newTodoItem,
+      isFinished: false,
+    });
+
     setTodoItemList([...todoItemList, {
-      id: todoItemId++,
+      id: docRef.id,
       todoItemContent: newTodoItem,
       isFinished: false,
     }]);
